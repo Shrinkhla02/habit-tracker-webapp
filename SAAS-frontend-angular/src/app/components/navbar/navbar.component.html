@@ -1,0 +1,51 @@
+<nav class="navbar">
+  <div class="nav-container">
+    <div class="nav-left">
+      <a class="brand" routerLink="/" (click)="closeMenu()" aria-label="BetterMe Home">
+        <div class="brand-icon">BM</div>
+        <span class="brand-text">BetterMe</span>
+      </a>
+
+      <button class="menu-toggle" [class.open]="isMenuOpen" type="button" (click)="toggleMenu()" aria-label="Toggle navigation">
+        <span class="menu-line"></span>
+        <span class="menu-line"></span>
+        <span class="menu-line"></span>
+      </button>
+
+      <div class="nav-links" [class.open]="isMenuOpen">
+      <a
+        *ngFor="let link of navLinks"
+        [routerLink]="link.path"
+        routerLinkActive="active"
+        (click)="closeMenu()"
+      >
+        {{ link.label }}
+      </a>
+      </div>
+    </div>
+
+    <ng-container *ngIf="authService.currentUser$ | async as session; else guestActions">
+      <div class="nav-user" (click)="toggleUserMenu()" tabindex="0">
+        <div class="avatar">{{ session.user.name.charAt(0) | uppercase }}</div>
+        <span class="user-name">{{ session.user.name }}</span>
+        <span class="chevron">▾</span>
+
+        <div class="user-menu" *ngIf="showUserMenu">
+          <button type="button" routerLink="/habits" (click)="closeMenu()">Dashboard</button>
+          <button type="button" routerLink="/reports" (click)="closeMenu()">Reports</button>
+          <button type="button" routerLink="/reminders" (click)="closeMenu()">Reminders</button>
+          <button type="button" routerLink="/profile" (click)="closeMenu()">Profile</button>
+          <hr />
+          <button type="button" (click)="logout()">Logout</button>
+        </div>
+      </div>
+    </ng-container>
+
+    <ng-template #guestActions>
+      <div class="nav-actions">
+        <a class="btn btn-outline" routerLink="/login" (click)="closeMenu()">Login</a>
+        <a class="btn btn-primary" routerLink="/register" (click)="closeMenu()">Get Started</a>
+      </div>
+    </ng-template>
+  </div>
+</nav>

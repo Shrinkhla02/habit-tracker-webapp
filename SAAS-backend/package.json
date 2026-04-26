@@ -1,0 +1,57 @@
+{
+  "name": "saas-backend",
+  "version": "1.0.0",
+  "main": "./server.js",  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js",
+    "seed": "node scripts/seed.js",
+    "fix:indexes": "node scripts/fix-indexes.js",
+    "test": "jest --verbose",
+    "test:watch": "jest --watch --verbose",
+    "test:coverage": "jest --coverage --verbose",
+    "test:get-habits": "node tests/test-get-habits.js",
+    "test:get-habitlogs": "node tests/test-get-habitLogs.js",
+    "test:get-reminders": "node tests/test-get-reminders.js",
+    "test:get-all": "npm run test:get-habits && npm run test:get-habitlogs && npm run test:get-reminders",
+    "test:jest-get-habits": "jest tests/habit-get.test.js --verbose",
+    "test:jest-get-habitlogs": "jest tests/habitlog-get.test.js --verbose",
+    "test:jest-get-reminders": "jest tests/reminder-get.test.js --verbose",
+    "test:jest-get-all": "jest tests/habit-get.test.js tests/habitlog-get.test.js tests/reminder-get.test.js --verbose",
+    "test:jest-habits-converted": "jest tests/test-get-habits-jest.js --verbose"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "engines": {
+    "node": ">=18 <23"
+  },
+  "dependencies": {
+    "axios": "^1.13.2",
+    "bcrypt": "^6.0.0",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "mongoose": "^8.19.3",
+    "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "@types/jest": "^30.0.0",
+    "jest": "^30.2.0",
+    "mongodb-memory-server": "^10.3.0",
+    "nodemon": "^3.1.10",
+    "supertest": "^7.1.4"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "coverageDirectory": "coverage",
+    "collectCoverageFrom": [
+      "controllers/**/*.js",
+      "models/**/*.js",
+      "!node_modules/**"
+    ],
+    "testMatch": [
+      "**/tests/**/*.test.js"
+    ]
+  }
+}

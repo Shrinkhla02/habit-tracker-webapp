@@ -1,0 +1,204 @@
+<!-- Reminder banner at the very top -->
+<section class="next-reminder" *ngIf="isLoggedIn && nextReminder">
+  <div class="reminder-pill">Next reminder</div>
+  <div class="reminder-info">
+    <h3>{{ nextReminder.habit }}</h3>
+    <p>
+      {{ nextReminder.dateLabel }} · {{ nextReminder.time }}
+      <span class="countdown-text" *ngIf="countdown"> ⏱️ In {{ countdown }}</span>
+    </p>
+  </div>
+  <a routerLink="/reminders" class="reminder-manage">
+    Manage reminders
+    <span>→</span>
+  </a>
+</section>
+
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-text">
+      <!-- Dynamic content based on login status -->
+      <span class="hero-pill" *ngIf="!isLoggedIn">Habit Intelligence Platform</span>
+      <span class="hero-pill" *ngIf="isLoggedIn">Welcome back, {{ userName }}!</span>
+      
+      <h1 *ngIf="!isLoggedIn">
+        Build habits that stick with <span class="highlight">BetterMe</span>
+      </h1>
+      <h1 *ngIf="isLoggedIn">
+        {{ greeting }}, {{ userName }}! 👋
+      </h1>
+      
+      <p *ngIf="!isLoggedIn">
+        Stay consistent with a beautiful dashboard, guided reflections, and smart nudges
+        that adapt to your rhythm. Your transformation starts with the next check-in.
+      </p>
+      <p *ngIf="isLoggedIn">
+        Keep up the momentum! Track your progress, celebrate your streaks, and build habits that last.
+      </p>
+      
+      <div class="hero-actions">
+        <a class="btn btn-primary" routerLink="/habits" *ngIf="!isLoggedIn">Explore Dashboard</a>
+        <a class="btn btn-primary" routerLink="/habits" *ngIf="isLoggedIn">View My Habits</a>
+        <a class="btn btn-outline" routerLink="/register" *ngIf="!isLoggedIn">Start Free Trial</a>
+        <a class="btn btn-outline" routerLink="/reports" *ngIf="isLoggedIn">View Reports</a>
+      </div>
+      
+      <div class="hero-stats">
+        <div class="stat-card" *ngFor="let stat of heroStats">
+          <span class="stat-value">{{ stat.value }}</span>
+          <span class="stat-label">{{ stat.label }}</span>
+        </div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <!-- Show real data for logged-in users -->
+      <div class="glass-card progress-card" *ngIf="isLoggedIn && recentHabits.length > 0">
+        <header>
+          <span class="tag">{{ recentHabits[0].category || 'Habit' }}</span>
+          <span class="streak">{{ recentHabits[0].currentStreak || 0 }} day streak</span>
+        </header>
+        <div class="chart">
+          <div class="chart-bar" *ngFor="let habit of recentHabits.slice(0, 5)" 
+               [style.height.%]="getProgressPercentage(habit)"></div>
+        </div>
+        <footer>
+          <span>Recent Progress</span>
+          <span class="percentage">{{ getAverageProgress() }}%</span>
+        </footer>
+      </div>
+      
+      <!-- Show static demo for non-logged-in users -->
+      <div class="glass-card progress-card" *ngIf="!isLoggedIn">
+        <header>
+          <span class="tag">Morning Routine</span>
+          <span class="streak">12 day streak</span>
+        </header>
+        <div class="chart">
+          <div class="chart-bar" style="height: 60%"></div>
+          <div class="chart-bar" style="height: 80%"></div>
+          <div class="chart-bar" style="height: 90%"></div>
+          <div class="chart-bar" style="height: 40%"></div>
+          <div class="chart-bar" style="height: 70%"></div>
+        </div>
+        <footer>
+          <span>Progress</span>
+          <span class="percentage">78%</span>
+        </footer>
+      </div>
+      
+      <div class="glass-card checkin-card" *ngIf="isLoggedIn && recentHabits.length > 0">
+        <p>Latest Habit</p>
+        <h3>"{{ recentHabits[0].name }}"</h3>
+        <span class="timestamp">{{ recentHabits[0].lastCompletedDate ? (recentHabits[0].lastCompletedDate | date: 'medium') : 'Not completed yet' }}</span>
+      </div>
+      
+      <div class="glass-card checkin-card" *ngIf="!isLoggedIn">
+        <p>Reflection saved</p>
+        <h3>"I felt energized after journaling today."</h3>
+        <span class="timestamp">6:30 AM · Mood: Focused</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Show features section only for non-logged-in users -->
+<section class="features" id="features" *ngIf="!isLoggedIn">
+  <div class="section-header">
+    <span class="section-pill">Why teams love BetterMe</span>
+    <h2>Designed for lasting behavior change</h2>
+    <p>
+      Habit dashboards, coaching insights, and community support weave together so you can
+      show up for the habits that matter.
+    </p>
+  </div>
+  <div class="features-grid">
+    <article class="feature-card" *ngFor="let feature of featureCards">
+      <span class="feature-icon">{{ feature.icon }}</span>
+      <h3>{{ feature.title }}</h3>
+      <p>{{ feature.description }}</p>
+      <button class="learn-more" type="button">Learn more →</button>
+    </article>
+  </div>
+</section>
+
+<!-- Show workflow section only for non-logged-in users -->
+<section class="workflow" id="workflow" *ngIf="!isLoggedIn">
+  <div class="workflow-inner">
+    <div class="workflow-headline">
+      <h2>Smooth flow from intention to action</h2>
+      <p>
+        BetterMe orchestrates reflection prompts, AI insights, and calendar nudges so your
+        habits evolve with you—not against you.
+      </p>
+      <a class="btn btn-secondary" routerLink="/habits">See it in action</a>
+    </div>
+    <div class="workflow-steps">
+      <div class="workflow-step" *ngFor="let step of workflowSteps">
+        <span class="step-number">{{ step.number }}</span>
+        <div>
+          <h3>{{ step.title }}</h3>
+          <p>{{ step.description }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Show testimonials only for non-logged-in users -->
+<section class="testimonials" *ngIf="!isLoggedIn">
+  <div class="section-header">
+    <span class="section-pill">Proof of progress</span>
+    <h2>Habits that compound into confident teams</h2>
+  </div>
+  <div class="testimonial-grid">
+    <article class="testimonial" *ngFor="let testimonial of testimonials">
+      <p class="quote">“{{ testimonial.quote }}”</p>
+      <p class="author">{{ testimonial.author }}</p>
+      <p class="role">{{ testimonial.role }}</p>
+    </article>
+  </div>
+</section>
+
+<!-- Show CTA only for non-logged-in users -->
+<section class="cta" id="cta" *ngIf="!isLoggedIn">
+  <div class="cta-card">
+    <div>
+      <h2>Ready to design your best habit year?</h2>
+      <p>Join thousands of teams using BetterMe to stay consistent, resilient, and inspired.</p>
+    </div>
+    <div class="cta-actions">
+      <a class="btn btn-primary" routerLink="/register">Get started free</a>
+      <a class="btn btn-outline" routerLink="/habits">Browse templates</a>
+    </div>
+  </div>
+</section>
+
+<!-- Quick actions for logged-in users -->
+<section class="quick-actions" *ngIf="isLoggedIn">
+  <div class="section-header">
+    <h2>Quick Actions</h2>
+    <p>Continue your habit journey</p>
+  </div>
+  <div class="actions-grid">
+    <a class="action-card" routerLink="/habits/new">
+      <span class="action-icon">➕</span>
+      <h3>Create New Habit</h3>
+      <p>Add a new habit to track</p>
+    </a>
+    <a class="action-card" routerLink="/habits">
+      <span class="action-icon">📊</span>
+      <h3>View All Habits</h3>
+      <p>See your complete habit list</p>
+    </a>
+    <a class="action-card" routerLink="/reports">
+      <span class="action-icon">📈</span>
+      <h3>View Reports</h3>
+      <p>Check your progress and stats</p>
+    </a>
+    <a class="action-card" routerLink="/reminders">
+      <span class="action-icon">⏰</span>
+      <h3>Manage Reminders</h3>
+      <p>Set up habit reminders</p>
+    </a>
+  </div>
+</section>

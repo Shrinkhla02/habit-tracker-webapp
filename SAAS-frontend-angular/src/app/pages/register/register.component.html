@@ -1,0 +1,47 @@
+<section class="auth-page">
+  <div class="auth-card">
+    <header>
+      <h1>Create your BetterMe space</h1>
+      <p>Design habits with intention—start your 30-day free trial.</p>
+    </header>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+      <label>
+        <span>Name</span>
+        <input type="text" placeholder="Alex Rivera" formControlName="name" />
+        <small class="error" *ngIf="name?.invalid && name?.touched">
+          Let us know what to call you.
+        </small>
+      </label>
+
+      <label>
+        <span>Email</span>
+        <input type="email" placeholder="you@betterme.com" formControlName="email" />
+        <small class="error" *ngIf="email?.invalid && email?.touched">
+          Enter a valid email address.
+        </small>
+      </label>
+
+      <label>
+        <span>Password</span>
+        <input type="password" placeholder="••••••" formControlName="password" />
+        <small class="error" *ngIf="password?.invalid && password?.touched">
+          Password must have at least 6 characters.
+        </small>
+      </label>
+
+      <button type="submit" [disabled]="isSubmitting">
+        {{ isSubmitting ? 'Creating account...' : 'Create account' }}
+      </button>
+
+      <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
+    </form>
+
+    <footer>
+      <p>
+        Already have an account?
+        <a routerLink="/login" [queryParams]="{ returnUrl: returnUrl }">Login</a>
+      </p>
+    </footer>
+  </div>
+</section>

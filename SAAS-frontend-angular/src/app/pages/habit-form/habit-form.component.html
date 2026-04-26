@@ -1,0 +1,131 @@
+<section class="habit-form" *ngIf="!isLoadingHabit">
+  <header class="form-header">
+    <h1>{{ pageTitle }}</h1>
+    <p>Craft a habit blueprint with clarity, cadence, and automated nudges.</p>
+  </header>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+    <div class="form-grid">
+      <label class="form-field">
+        <span>Habit name</span>
+        <input type="text" placeholder="Morning journaling" formControlName="name" />
+        <small class="error" *ngIf="name?.invalid && name?.touched">
+          Your habit needs a name with at least 2 characters.
+        </small>
+      </label>
+
+      <label class="form-field">
+        <span>Category</span>
+        <select formControlName="category">
+          <option *ngFor="let category of categories" [value]="category.value">
+            {{ category.label }}
+          </option>
+        </select>
+      </label>
+
+      <label class="form-field">
+        <span>Frequency</span>
+        <select formControlName="frequency">
+          <option *ngFor="let frequency of frequencies" [value]="frequency.value">
+            {{ frequency.label }}
+          </option>
+        </select>
+      </label>
+
+      <label class="form-field">
+        <span>Description (optional)</span>
+        <textarea rows="4" placeholder="Why this habit matters" formControlName="description"></textarea>
+      </label>
+    </div>
+
+    <div class="reminder-card">
+      <div class="card-headline">
+        <h3>Reminder cadence</h3>
+        <p>Choose when BetterMe should nudge you (optional)</p>
+      </div>
+
+      <label class="form-field inline">
+        <span>Reminder frequency</span>
+        <select formControlName="reminderFrequency">
+          <option value="">None</option>
+          <option *ngFor="let reminder of reminderFrequency" [value]="reminder.value">
+            {{ reminder.label }}
+          </option>
+        </select>
+      </label>
+
+            <!-- When user chooses a cadence, show the corresponding inputs -->
+            <div *ngIf="form.get('reminderFrequency')?.value as rf">
+              <!-- Daily: time only -->
+              <div *ngIf="rf === 'daily'" class="form-grid">
+                <label class="form-field">
+                  <span>Time</span>
+                  <input type="time" formControlName="reminderTime" />
+                </label>
+              </div>
+      
+              <!-- Weekly: time + days -->
+              <div *ngIf="rf === 'weekly'" class="form-grid">
+                <label class="form-field">
+                  <span>Time</span>
+                  <input type="time" formControlName="reminderTime" />
+                </label>
+      
+                <div class="form-field">
+                  <span>Days of the week</span>
+                  <div formGroupName="daysOfWeek" class="days-grid">
+                    <label class="day-pill"><input type="checkbox" formControlName="mon" /><span>Mon</span></label>
+                    <label class="day-pill"><input type="checkbox" formControlName="tue" /><span>Tue</span></label>
+                    <label class="day-pill"><input type="checkbox" formControlName="wed" /><span>Wed</span></label>
+                    <label class="day-pill"><input type="checkbox" formControlName="thu" /><span>Thu</span></label>
+                    <label class="day-pill"><input type="checkbox" formControlName="fri" /><span>Fri</span></label>
+                    <label class="day-pill"><input type="checkbox" formControlName="sat" /><span>Sat</span></label>
+                    <label class="day-pill"><input type="checkbox" formControlName="sun" /><span>Sun</span></label>
+                  </div>
+                  <small class="error" *ngIf="rf === 'weekly' && !atLeastOneDaySelected() && (form.touched || form.dirty)">
+                    Please select at least one day.
+                  </small>
+                </div>
+              </div>
+      
+              <!-- Monthly: time + calendar date (UI only) -->
+              <div *ngIf="rf === 'monthly'" class="form-grid">
+                <label class="form-field">
+                  <span>Time</span>
+                  <input type="time" formControlName="reminderTime" />
+                </label>
+                <label class="form-field">
+                  <span>Date</span>
+                  <input type="date" formControlName="monthlyDate" />
+                  <small class="error" *ngIf="form.get('monthlyDate')?.invalid && form.get('monthlyDate')?.touched">
+                    Please choose a valid date.
+                  </small>
+                </label>
+              </div>
+            </div>
+      <div *ngIf="reminderSummary" class="reminder-summary">
+        {{ reminderSummary }}
+      </div>
+    </div>
+
+    <label class="form-field">
+      <span>Reflection notes</span>
+      <textarea rows="5" placeholder="Add prompts, affirmations, or accountability partners" formControlName="notes"></textarea>
+    </label>
+
+    <div class="form-footer">
+      <a class="btn btn-outline" routerLink="/habits">Cancel</a>
+      <button class="btn btn-primary" type="submit" [disabled]="isSubmitting">
+        {{ isSubmitting ? 'Saving...' : habitId ? 'Update Habit' : 'Create Habit' }}
+      </button>
+    </div>
+
+    <p class="form-success" *ngIf="successMessage">{{ successMessage }}</p>
+    <p class="form-error" *ngIf="errorMessage">{{ errorMessage }}</p>
+  </form>
+</section>
+
+<div class="loading" *ngIf="isLoadingHabit">
+  <div class="spinner"></div>
+  <p>Loading habit blueprint...</p>
+</div>

@@ -1,0 +1,86 @@
+<section class="habit-detail" *ngIf="!isLoading && !errorMessage && habit">
+  <header class="detail-header">
+    <div>
+      <span class="crumbs"><a routerLink="/habits">← Back to habits</a></span>
+      <h1>{{ habit.name }}</h1>
+      <p>{{ habit.description || 'Stay committed to your habit journey.' }}</p>
+    </div>
+    <div class="streak-card">
+      <span>Current Streak</span>
+      <strong>{{ habit.currentStreak || 0 }} days</strong>
+      <small>Best streak: {{ habit.bestStreak || 0 }} days</small>
+    </div>
+  </header>
+
+  <div class="detail-grid">
+    <article class="detail-card">
+      <h2>Habit Blueprint</h2>
+      <div class="meta-pair">
+        <span>Category</span>
+        <strong>{{ habit.category || 'General wellness' }}</strong>
+      </div>
+      <div class="meta-pair">
+        <span>Frequency</span>
+        <strong>{{ habit.frequency || 'Custom cadence' }}</strong>
+      </div>      <div class="meta-pair">
+        <span>Reminder</span>
+        <strong>{{ getReminderDisplay() }}</strong>
+      </div>
+      <div class="meta-pair">
+        <span>Status</span>
+        <strong>{{ habit.isActive === false ? 'Paused' : 'Active' }}</strong>
+      </div>
+      <div class="meta-pair">
+        <span>Created</span>
+        <strong>{{ habit.createdAt | date: 'mediumDate' }}</strong>
+      </div>
+    </article>
+
+    <article class="detail-card">
+      <h2>Progress snapshot</h2>
+      <ul class="progress-list">
+        <li>
+          <span class="label">Last completed</span>
+          <span class="value">{{ habit.lastCompletedDate | date: 'medium' }}</span>
+        </li>
+        <li>
+          <span class="label">Completion rate</span>
+          <span class="value">{{ habit.currentStreak ? 'On track' : 'Restarting' }}</span>
+        </li>
+        <li>
+          <span class="label">Momentum</span>
+          <span class="value">{{ habit.currentStreak && habit.currentStreak > 7 ? '🔥 Strong' : '⚡️ Building' }}</span>
+        </li>
+      </ul>
+    </article>
+
+    <article class="detail-card span-2">
+      <h2>Reflection & Notes</h2>
+      <p>
+        {{ habit.notes || 'Capture reflections, energy levels, and blockers to keep each habit review meaningful.' }}
+      </p>
+      <div class="reflection-empty" *ngIf="!habit.notes">
+        <span>Tip</span>
+        <p>Log how you feel after each check-in to reveal patterns over time.</p>
+      </div>
+    </article>
+  </div>
+
+  <footer class="detail-footer">
+    <a class="btn btn-outline" [routerLink]="['/habits', habit._id, 'edit']">Edit habit</a>
+    <a class="btn btn-primary" routerLink="/habits">View all habits</a>
+  </footer>
+</section>
+
+<ng-template #reminderPaused>Paused</ng-template>
+
+<div class="state-card" *ngIf="!isLoading && errorMessage">
+  <h2>Habit not available</h2>
+  <p>{{ errorMessage }}</p>
+  <a class="btn btn-outline" routerLink="/habits">Back to habits</a>
+</div>
+
+<div class="loading" *ngIf="isLoading">
+  <div class="spinner"></div>
+  <p>Loading habit details...</p>
+</div>

@@ -1,0 +1,29 @@
+[
+  {
+    "userId": "user123",
+    "name": "Morning Run",
+    "description": "Run for 30 minutes",
+    "reminder": "morning",
+    "frequency": "daily",
+    "category": "fitness",
+    "isActive": true
+  },
+  {
+    "userId": "user123",
+    "name": "Read",
+    "description": "Read for 20 minutes",
+    "reminder": "evening",
+    "frequency": "daily",
+    "category": "learning",
+    "isActive": true
+  },
+  {
+    "userId": "user123",
+    "name": "Meditation",
+    "description": "Meditate for 10 minutes",
+    "reminder": "morning",
+    "frequency": "daily",
+    "category": "health",
+    "isActive": true
+  }
+]

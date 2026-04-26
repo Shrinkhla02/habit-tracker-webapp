@@ -1,0 +1,70 @@
+<div class="subscription-page">
+  <div class="subscription-header">
+    <span class="header-pill">Choose Your Plan</span>
+    <h1>Simple, Transparent Pricing</h1>
+    <p>Select the perfect plan for your habit-building journey. Start free, upgrade anytime.</p>
+  </div>
+
+  <div class="plans-grid">
+    <div class="plan-card" 
+         *ngFor="let plan of plans" 
+         [class.popular]="plan.popular"
+         [class.selected]="selectedPlan === plan.id">
+      <div class="plan-badge" *ngIf="plan.popular">Most Popular</div>
+      <div class="plan-icon">{{ plan.icon }}</div>
+      <h2>{{ plan.name }}</h2>
+      <p class="plan-description">{{ plan.description }}</p>
+      
+      <div class="plan-price">
+        <span class="price-amount" *ngIf="plan.price === 0">Free</span>
+        <span class="price-amount" *ngIf="plan.price > 0">${{ plan.price }}</span>
+        <span class="price-period" *ngIf="plan.price > 0">/{{ plan.period }}</span>
+        <span class="price-period" *ngIf="plan.price === 0">Forever</span>
+      </div>
+
+      <ul class="plan-features">
+        <li *ngFor="let feature of plan.features">
+          <span class="check-icon">✓</span>
+          {{ feature }}
+        </li>
+      </ul>
+
+      <button 
+        class="plan-button" 
+        [class.button-primary]="plan.popular"
+        [class.button-outline]="!plan.popular && plan.price > 0"
+        [class.button-free]="plan.price === 0"
+        (click)="selectPlan(plan.id)">
+        {{ plan.price === 0 ? 'Get Started Free' : 'Choose Plan' }}
+      </button>
+    </div>
+  </div>
+
+  <div class="subscription-info">
+    <h3>Frequently Asked Questions</h3>
+    <div class="faq-grid">
+      <div class="faq-item">
+        <h4>Can I change plans later?</h4>
+        <p>Yes! You can upgrade or downgrade your plan at any time. Changes take effect immediately.</p>
+      </div>
+      <div class="faq-item">
+        <h4>What payment methods do you accept?</h4>
+        <p>This is a demo version. In production, we accept all major credit cards and PayPal.</p>
+      </div>
+      <div class="faq-item">
+        <h4>Is there a free trial?</h4>
+        <p>The Basic plan is free forever! Premium and Pro plans offer a 14-day free trial.</p>
+      </div>
+      <div class="faq-item">
+        <h4>Can I cancel anytime?</h4>
+        <p>Absolutely! Cancel your subscription anytime with no questions asked. No hidden fees.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="cta-section" *ngIf="!isLoggedIn">
+    <p>Ready to start building better habits?</p>
+    <a routerLink="/register" class="cta-button">Create Free Account</a>
+  </div>
+</div>
+

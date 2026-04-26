@@ -1,0 +1,83 @@
+<section class="reminders-page">
+  <header class="reminders-header">
+    <span class="page-pill">Signals & Nudges</span>
+    <h1>Smart Reminders Control Center</h1>
+    <p>
+      Fine-tune when, where, and how nudges arrive so momentum feels supportive—not disruptive.
+    </p>
+  </header>
+
+  <section class="upcoming">
+    <div class="section-heading">
+      <div>
+        <h2>Upcoming nudges</h2>
+        <p>Customize timing, tone, and channel for each habit.</p>
+      </div>
+      <a class="ghost-button" routerLink="/habits">Create reminder from habit →</a>
+    </div>
+
+    <div class="empty-state" *ngIf="!upcomingReminders.length">
+      <h3>No reminders yet</h3>
+      <p>Create or activate a habit to start receiving nudges exactly when you need them.</p>
+      <a class="primary-link" routerLink="/habits/new">Design a habit reminder</a>
+    </div>
+
+    <div class="reminder-grid" *ngIf="upcomingReminders.length">
+      <article class="reminder-card" *ngFor="let reminder of upcomingReminders; let i = index">
+        <div class="card-header">
+          <div class="habit-icon">{{ getHabitInitial(reminder.habit) }}</div>
+          <span class="channel-pill">{{ reminder.channel }}</span>
+        </div>
+
+        <h3 class="habit-name">{{ reminder.habit }}</h3>
+        <p class="reminder-time">{{ getDisplayTime(reminder) }}</p>
+
+        <div class="reminder-meta">
+          <div class="meta-block">
+            <label>Channel</label>
+            <span>{{ reminder.channel }}</span>
+          </div>
+          <div class="meta-block">
+            <label>Tone</label>
+            <span>{{ reminder.tone }}</span>
+          </div>
+          <div class="meta-block">
+            <label>Status</label>
+            <span>{{ reminder.time === 'None' ? 'Inactive' : 'Scheduled' }}</span>
+          </div>
+        </div>
+
+        <button type="button" class="cadence-button" (click)="openCadenceModal(i)">
+          <span>⏰ Adjust Reminder Time</span>
+          <span class="arrow">→</span>
+        </button>
+      </article>
+    </div>
+  </section>
+
+  <!-- Modal for calendar and time selection -->
+  <div class="modal-backdrop" *ngIf="cadenceModalOpen">
+    <div class="modal-card">
+      <button class="modal-close" type="button" aria-label="Close" (click)="closeCadenceModal()">✕</button>
+      <span class="modal-pill">Cadence</span>
+      <h3>Adjust reminder time</h3>
+      <p>Pick the moment this habit should nudge you next.</p>
+
+      <div class="modal-grid">
+        <label class="modal-field">
+          <span>Date</span>
+          <input type="date" [(ngModel)]="selectedDate" />
+        </label>
+        <label class="modal-field">
+          <span>Time</span>
+          <input type="time" [(ngModel)]="selectedTime" />
+        </label>
+      </div>
+
+      <div class="modal-actions">
+        <button class="ghost-button" type="button" (click)="closeCadenceModal()">Cancel</button>
+        <button class="primary-button" type="button" (click)="saveCadence()">Save changes</button>
+      </div>
+    </div>
+  </div>
+</section>

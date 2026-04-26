@@ -1,0 +1,16 @@
+[
+  {
+    "habitId": "habit123",
+    "userId": "user123",
+    "completedDate": "2025-10-28",
+    "isCompleted": true,
+    "notes": "Great run today"
+  },
+  {
+    "habitId": "habit124",
+    "userId": "user123",
+    "completedDate": "2025-10-28",
+    "isCompleted": true,
+    "notes": "Finished a good chapter"
+  }
+]

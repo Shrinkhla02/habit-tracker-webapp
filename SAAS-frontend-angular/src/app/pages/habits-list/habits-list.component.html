@@ -1,0 +1,136 @@
+<section class="habits-page">
+  <header class="habits-header">
+    <div>
+      <h1>Your Habit Universe</h1>
+      <p>Track, refine, and celebrate the habits that move you forward.</p>
+      <div class="plan-info" *ngIf="!isLoading">
+        <span class="plan-badge" [class.basic]="userPlan === 'basic'" [class.premium]="userPlan === 'premium'" [class.pro]="userPlan === 'pro'">
+          {{ userPlan | uppercase }}
+        </span>
+        <span class="habit-count">
+          {{ habitCount }} / {{ habitLimit === -1 ? '∞' : habitLimit }} habits
+        </span>
+        <a *ngIf="isAtLimit" routerLink="/subscription" class="upgrade-link">
+          Upgrade to add more →
+        </a>
+      </div>
+    </div>
+    <a 
+      class="btn btn-primary" 
+      routerLink="/habits/new"
+      [class.disabled]="isAtLimit"
+      [title]="isAtLimit ? 'Upgrade your plan to add more habits' : 'Add a new habit'"
+    >
+      Add New Habit
+    </a>
+  </header>
+
+  <div class="card-grid" *ngIf="!isLoading && !errorMessage && habits.length">
+    <article class="habit-card" *ngFor="let habit of habits; trackBy: trackByHabitId">
+      <div class="habit-headline">
+        <div class="habit-badge">{{ habit.category || 'General' }}</div>
+        <label class="complete-toggle">
+          <input
+            type="checkbox"
+            [disabled]="isCompletingHabit(habit._id)"
+            (change)="onToggleComplete(habit, $any($event.target).checked, $event)"
+          />
+          <span>{{ isCompletingHabit(habit._id) ? 'Saving...' : 'Mark as complete' }}</span>
+        </label>
+      </div>
+      <h2>{{ habit.name }}</h2>
+      <p class="habit-description">{{ habit.description || 'Keep up the momentum.' }}</p>
+
+      <div class="habit-meta">
+        <div>
+          <span class="meta-label">Frequency</span>
+          <span class="meta-value">{{ habit.frequency || 'Custom' }}</span>
+        </div>        <div>
+          <span class="meta-label">Reminder</span>
+          <span class="meta-value">{{ getReminderDisplay(habit) }}</span>
+        </div>
+        <div>
+          <span class="meta-label">Best Streak</span>
+          <span class="meta-value">{{ habit.bestStreak || 0 }} days</span>
+        </div>
+        <div>
+          <span class="meta-label">Last Check-in</span>
+          <span class="meta-value">{{ habit.lastCompletedDate | date: 'mediumDate' }}</span>
+        </div>
+        <div>
+          <span class="meta-label">Status</span>
+          <span class="meta-value" [class.paused]="habit.isActive === false">
+            {{ habit.isActive === false ? 'Paused' : 'Active' }}
+          </span>
+        </div>
+      </div>
+      <div class="habit-footer"> 
+        <div class="habit-actions">
+          <a class="btn btn-outline" [routerLink]="['/habits', habit._id]">View Details</a>
+          <a
+            class="btn btn-ghost icon-button"
+            [routerLink]="['/habits', habit._id, 'edit']"
+            aria-label="Edit habit"
+          >
+            ✏️
+          </a>
+          <button
+            type="button"
+            class="btn btn-ghost icon-button"
+            aria-label="Delete habit"
+            (click)="openDeleteModal(habit)"
+          >
+            🗑️
+          </button>
+        </div>
+        <span class="habit-streak">
+          🔥 {{ habit.currentStreak || 0 }} day streak
+        </span>
+      </div>
+    </article>
+  </div>
+
+  <div class="state-card" *ngIf="!isLoading && !errorMessage && !habits.length">
+    <h2>No habits yet</h2>
+    <p>
+      Start by crafting your first habit blueprint. Define the cadence, energy, and
+      reminders that will keep you consistent.
+    </p>
+    <a class="btn btn-primary" routerLink="/habits/new">Design your first habit</a>
+  </div>
+
+  <div class="state-card warning" *ngIf="errorMessage">
+    <h2>We hit a snag</h2>
+    <p>{{ errorMessage }}</p>
+    <button class="btn btn-outline" type="button" (click)="loadHabits()">Retry</button>
+  </div>
+
+  <div class="loading" *ngIf="isLoading">
+    <div class="spinner"></div>
+    <p>Loading your habits...</p>
+  </div>
+
+
+  <div class="modal-backdrop" *ngIf="showDeleteModal">
+    <div class="modal">
+      <h2>Delete habit?</h2>
+      <p>Are you sure you want to delete the habit? All your progress will be lost.</p>
+      <div class="modal-actions">
+        <button
+          type="button"
+          class="btn btn-outline"
+          (click)="onCancelDelete()"
+        >
+          Cancel
+        </button>
+        <button
+          type="button"
+          class="btn btn-danger"
+          (click)="onConfirmDelete()"
+        >
+          Yes, I'm sure
+        </button>
+      </div>
+    </div>
+  </div>
+</section>

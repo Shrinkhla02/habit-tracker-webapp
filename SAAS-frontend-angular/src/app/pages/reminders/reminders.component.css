@@ -1,0 +1,525 @@
+@keyframes fadeSlideUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.reminders-page {
+  padding: 1rem 1.5rem 5rem;
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+  animation: fadeIn 0.6s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.reminders-header {
+  text-align: center;
+  max-width: 640px;
+  margin: 0 auto 2.5rem;
+}
+
+.page-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 1rem;
+  border-radius: 999px;
+  background: rgba(239, 68, 68, 0.12);
+  color: #ef4444;
+  font-weight: 600;
+  box-shadow: inset 0 0 0 1px rgba(239, 68, 68, 0.15);
+}
+
+.reminders-header h1 {
+  font-size: clamp(2.2rem, 5vw, 3rem);
+  margin-bottom: 0.75rem;
+  color: #0f172a;
+}
+
+.reminders-header p {
+  margin: 0;
+  color: #475569;
+  line-height: 1.7;
+}
+
+.section-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.section-heading h2 {
+  margin: 0 0 0.35rem;
+  font-size: 1.65rem;
+  color: #0f172a;
+}
+
+.section-heading p {
+  margin: 0;
+  color: #475569;
+}
+
+.ghost-button,
+.primary-link {
+  text-decoration: none;
+  font-weight: 600;
+  color: #ef4444;
+  border-radius: 999px;
+  padding: 0.5rem 1.25rem;
+  border: 1.5px solid rgba(239, 68, 68, 0.2);
+  transition: all 0.25s ease;
+}
+
+.ghost-button:hover,
+.primary-link:hover {
+  border-color: rgba(239, 68, 68, 0.4);
+  background: rgba(239, 68, 68, 0.08);
+}
+
+.primary-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  background: linear-gradient(135deg, #ef4444, #f97316);
+  color: #fff;
+  border: none;
+  padding: 0.6rem 1.5rem;
+  box-shadow: 0 10px 25px rgba(239, 68, 68, 0.3);
+}
+
+.empty-state {
+  text-align: center;
+  padding: 3rem;
+  border-radius: 28px;
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px dashed rgba(239, 68, 68, 0.3);
+  color: #475569;
+  display: grid;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.empty-state h3 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: #0f172a;
+}
+
+.reminder-grid {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  margin-bottom: 3rem;
+}
+
+.reminder-card {
+  padding: 2.5rem;
+  border-radius: 28px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid rgba(239, 68, 68, 0.15);
+  box-shadow: 
+    0 28px 72px rgba(239, 68, 68, 0.15),
+    0 0 0 1px rgba(255, 255, 255, 0.6) inset;
+  display: grid;
+  gap: 1.5rem;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  animation: slideUp 0.6s ease-out backwards;
+}
+
+.reminder-card:nth-child(1) { animation-delay: 0.1s; }
+.reminder-card:nth-child(2) { animation-delay: 0.2s; }
+.reminder-card:nth-child(3) { animation-delay: 0.3s; }
+.reminder-card:nth-child(4) { animation-delay: 0.4s; }
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.reminder-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #6366f1, #8b5cf6);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.reminder-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.08), rgba(59, 130, 246, 0.05), rgba(168, 85, 247, 0.05));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.reminder-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 
+    0 36px 90px rgba(239, 68, 68, 0.2),
+    0 0 0 1px rgba(255, 255, 255, 0.9) inset;
+}
+
+.reminder-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: left 0.6s ease;
+}
+
+.reminder-card:hover::after {
+  left: 100%;
+}
+
+.reminder-card:hover::before {
+  opacity: 1;
+}
+
+.reminder-card:hover::after {
+  opacity: 1;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.habit-icon {
+  width: 46px;
+  height: 46px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #ef4444, #f97316);
+  color: #fff;
+  font-weight: 700;
+  display: grid;
+  place-items: center;
+  letter-spacing: 0.05em;
+  box-shadow: 0 10px 25px rgba(239, 68, 68, 0.35);
+}
+
+.channel-pill {
+  padding: 0.35rem 0.9rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  background: rgba(239, 68, 68, 0.12);
+  color: #ef4444;
+  font-weight: 600;
+  border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+.habit-name {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0;
+}
+
+.reminder-time {
+  margin: 0;
+  color: #475569;
+  font-weight: 500;
+}
+
+.reminder-meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.meta-block {
+  display: grid;
+  gap: 0.35rem;
+  min-width: 120px;
+}
+
+.meta-block label {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #94a3b8;
+}
+
+.meta-block span {
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.cadence-button {
+  width: 100%;
+  margin-top: 0.5rem;
+  border: none;
+  padding: 0.85rem 1.5rem;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #ef4444, #f97316);
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.cadence-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: left 0.5s ease;
+}
+
+.cadence-button:hover {
+  background: linear-gradient(135deg, #dc2626, #ea580c);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
+}
+
+.cadence-button:hover::before {
+  left: 100%;
+}
+
+.cadence-button:active {
+  transform: translateY(0);
+}
+
+.cadence-button .arrow {
+  font-size: 1.2rem;
+  transition: transform 0.3s ease;
+  font-weight: 700;
+}
+
+.cadence-button:hover .arrow {
+  transform: translateX(6px);
+}
+
+.channels ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 1rem;
+}
+
+.channels li {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 1.2rem;
+  padding: 1.5rem 1.75rem;
+  border-radius: 26px;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(239, 68, 68, 0.12);
+  box-shadow: 0 18px 40px rgba(148, 163, 184, 0.2);
+}
+
+.channel-dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ef4444, #f97316);
+}
+
+.channels strong {
+  font-size: 1.1rem;
+  color: #0f172a;
+}
+
+.channels p {
+  margin: 0.35rem 0 0;
+  color: #475569;
+  line-height: 1.6;
+}
+
+.channel-action {
+  border: none;
+  background: rgba(15, 23, 42, 0.05);
+  color: #0f172a;
+  padding: 0.65rem 1.4rem;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.channel-action:hover {
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+}
+
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(15, 23, 42, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-card {
+  position: relative;
+  background: rgba(255, 255, 255, 0.98);
+  border-radius: 28px;
+  padding: 2.5rem;
+  width: min(480px, 90vw);
+  box-shadow: 0 25px 70px rgba(15, 23, 42, 0.35), 0 0 0 1px rgba(255, 255, 255, 0.6) inset;
+  animation: fadeSlideUp 0.35s ease forwards;
+  display: grid;
+  gap: 1.5rem;
+}
+
+.modal-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  border: none;
+  background: rgba(15, 23, 42, 0.05);
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1rem;
+  color: #0f172a;
+  transition: background 0.2s ease;
+}
+
+.modal-close:hover {
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+}
+
+.modal-pill {
+  padding: 0.35rem 0.9rem;
+  border-radius: 999px;
+  background: rgba(239, 68, 68, 0.12);
+  color: #ef4444;
+  font-weight: 600;
+  width: max-content;
+}
+
+.modal-card h3 {
+  margin: 0;
+  font-size: 1.6rem;
+  color: #0f172a;
+}
+
+.modal-card p {
+  margin: 0;
+  color: #64748b;
+}
+
+.modal-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+}
+
+.modal-field {
+  display: grid;
+  gap: 0.5rem;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.modal-field span {
+  font-size: 0.9rem;
+  color: #94a3b8;
+  letter-spacing: 0.02em;
+}
+
+.modal-field input {
+  font: inherit;
+  padding: 0.85rem 1rem;
+  border-radius: 14px;
+  border: 1.5px solid rgba(148, 163, 184, 0.4);
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+}
+
+.modal-field input:focus {
+  border-color: rgba(239, 68, 68, 0.6);
+  outline: none;
+  box-shadow: 0 12px 35px rgba(239, 68, 68, 0.15);
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.primary-button {
+  border: none;
+  border-radius: 14px;
+  padding: 0.9rem 1.6rem;
+  font-weight: 600;
+  color: #fff;
+  background: linear-gradient(135deg, #ef4444, #f97316);
+  box-shadow: 0 12px 30px rgba(239, 68, 68, 0.35);
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.primary-button:hover {
+  transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+  .reminders-page {
+    padding: 3rem 1.25rem 4rem;
+  }
+
+  .channels li {
+    grid-template-columns: 1fr;
+    text-align: left;
+  }
+
+  .channel-action {
+    justify-self: flex-start;
+  }
+}

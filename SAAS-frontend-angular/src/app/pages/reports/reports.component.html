@@ -1,0 +1,56 @@
+<section class="reports-page">
+  <header class="reports-header">
+    <div>
+      <h1>Habit Intelligence Reports</h1>
+      <p>
+        Understand patterns, energy windows, and streak health at a glance so you can coach
+        your future self with intention.
+      </p>
+    </div>
+    <button 
+      *ngIf="!loading" 
+      (click)="refresh()" 
+      class="btn btn-outline"
+      style="margin-left: auto;"
+    >
+      🔄 Refresh
+    </button>
+  </header>
+
+  <div *ngIf="loading" class="loading-state">
+    <p>Loading your reports...</p>
+  </div>
+
+  <div *ngIf="error && !loading" class="error-state">
+    <p>{{ error }}</p>
+    <button (click)="loadReports()" class="retry-btn">Try Again</button>
+  </div>
+
+  <div *ngIf="!loading && stats">
+    <div class="summary-grid">
+      <article class="summary-tile" *ngFor="let tile of summaryTiles; trackBy: trackByTile">
+        <span class="tile-label">{{ tile.label }}</span>
+        <strong class="tile-value">{{ tile.value }}</strong>
+        <span class="tile-trend">{{ tile.trend }}</span>
+      </article>
+    </div>
+
+    <section class="visual-grid">
+      <article class="visual-card">
+        <h2>Habit cadence mix</h2>
+        <ul class="breakdown-list" *ngIf="cadenceBreakdown.length > 0">
+          <li *ngFor="let cadence of cadenceBreakdown">
+            <span>{{ cadence.label }}</span>
+            <div class="bar">
+              <div class="bar-fill" [style.width.%]="cadence.value"></div>
+            </div>
+            <span class="value">{{ cadence.value }}%</span>
+          </li>
+        </ul>
+        <p *ngIf="cadenceBreakdown.length === 0" class="empty-state">
+          No habits yet. Create some habits to see the breakdown.
+        </p>
+      </article>
+    </section>
+  </div>
+</section>
