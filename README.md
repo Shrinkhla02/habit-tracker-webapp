@@ -2,8 +2,6 @@
 
 A full-stack Habit Tracker web application that enables users to create, manage, and track daily habits with authentication, reminders, and progress tracking.
 
----
-
 ## Features
 
 - User authentication and authorization using JWT
@@ -13,8 +11,6 @@ A full-stack Habit Tracker web application that enables users to create, manage,
 - RESTful APIs for all core operations
 - Secure backend with token-based authentication
 - Responsive frontend for user-friendly experience
-
----
 
 ## Tech Stack
 
@@ -34,103 +30,95 @@ Authentication:
 Deployment:
 - Microsoft Azure
 
----
-
 ## Project Structure
+
+```bash
 habit-tracker-app/
 │
-├── client/ # React frontend
-│ ├── src/
-│ └── public/
+├── client/                 # React frontend
+│   ├── src/
+│   └── public/
 │
-├── server/ # Express backend
-│ ├── controllers/
-│ ├── models/
-│ ├── routes/
-│ ├── middleware/
-│ ├── config/
-│ └── server.js
+├── server/                 # Express backend
+│   ├── controllers/
+│   ├── models/
+│   ├── routes/
+│   ├── middleware/
+│   ├── config/
+│   └── server.js
 │
 ├── .env
 ├── package.json
 └── README.md
-
----
+```
 
 ## Architecture
-Client (React)
-|
-| REST API calls with JWT authentication
-v
-Backend (Express.js)
-|
-| Business logic and cron-based scheduling
-|
-v
-Database (MongoDB)
 
-### Flow
+```mermaid
+flowchart TD
+    A[Frontend React.js] -->|HTTP Requests REST API JWT Authentication| B[Backend Node.js Express]
 
-1. User registers or logs in through the frontend  
-2. Backend validates credentials and generates a JWT token  
-3. Token is used for accessing protected routes  
-4. User creates and manages habits  
-5. Data is stored and retrieved from MongoDB  
-6. Cron jobs run periodically to check and trigger reminders for pending habits  
+    B --> C[Controllers Business Logic]
+    B --> D[Middleware JWT Auth]
+    B --> E[Cron Scheduler Reminders Job]
 
----
+    C --> F[MongoDB Database Layer]
+    D --> F
+    E --> F
+```
+
+## Flow
+
+- User registers or logs in through the frontend  
+- Backend validates credentials and generates a JWT token  
+- Token is used for accessing protected routes  
+- User creates and manages habits  
+- Data is stored and retrieved from MongoDB  
+- Cron jobs run periodically to trigger reminders for pending habits  
 
 ## Authentication Flow
 
-- User registration and login implemented with secure password hashing  
-- JWT token is issued upon successful authentication  
-- Token is passed in request headers for protected APIs  
-- Middleware verifies token before granting access to secured routes  
-
----
+- User registration and login with secure password hashing  
+- JWT token issued upon successful authentication  
+- Token sent in request headers for protected APIs  
+- Middleware verifies token before allowing access  
 
 ## Reminder System
 
 - Cron jobs execute at scheduled intervals  
 - System checks incomplete habits for users  
-- Reminder logic is triggered based on scheduled tasks  
+- Reminder logic triggers based on scheduled tasks  
 - Helps users maintain consistency in habit tracking  
-
----
 
 ## API Endpoints
 
 ### Authentication
-- POST /api/auth/register → Register a new user  
+
+- POST /api/auth/register → Register user  
 - POST /api/auth/login → Login user  
 
 ### Habits
-- GET /api/habits → Fetch all habits  
-- POST /api/habits → Create a new habit  
-- PUT /api/habits/:id → Update an existing habit  
-- DELETE /api/habits/:id → Delete a habit  
 
----
+- GET /api/habits → Fetch all habits  
+- POST /api/habits → Create habit  
+- PUT /api/habits/:id → Update habit  
+- DELETE /api/habits/:id → Delete habit  
 
 ## Deployment
 
 - Backend deployed on Microsoft Azure App Service  
 - MongoDB Atlas used as cloud database  
 - Environment variables configured securely  
-- CORS enabled for secure frontend-backend communication  
-
----
+- CORS enabled for frontend-backend communication  
 
 ## Future Enhancements
 
 - Push notification support for reminders  
 - Habit streak tracking and analytics dashboard  
-- Gamification features to improve engagement  
-- Mobile application using React Native  
-- Social sharing of habit progress  
-
----
+- Gamification features  
+- Mobile app using React Native  
+- Social sharing of progress  
 
 ## Author
 
-This project was developed as a full-stack application to demonstrate CRUD operations, authentication, scheduling, and cloud deployment using modern web technologies.
+This project demonstrates full-stack development using CRUD operations, authentication, scheduling, and cloud deployment.
